@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import {useForm} from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useCreateInvoiceMutation } from './invoiceApiSlice';
+import{MdOutlineAdd} from 'react-icons/md'
 
 const CreateInvoice = () => {
 
@@ -129,7 +130,9 @@ const CreateInvoice = () => {
                 <div>
                     <div className='flex justify-around items-center'>
                         <h2>Items</h2>
-                        <button onClick={handleAddItem} className=' rounded-full text-center text-white h-10 w-10 font-semibold bg-green-600 hover:bg-green-700 py-2 px-2'>+</button>
+                        <button onClick={handleAddItem} className=' '>
+                            <MdOutlineAdd  className='text-2xl items-center align-middle bg-green-500 rounded text-white'/>
+                        </button>
                     </div>
                     {items.map((item, index) =>(
                         <div key={index}>
@@ -150,12 +153,6 @@ const CreateInvoice = () => {
                                 <input placeholder='Ex: 10.0' type='number' {...register(`items.${index}.price`, {required:true})} className='h-8 w-full px-2 py-2 border mt-2'/>
                                 {errors.items?.[index]?.price && <span className='text-red-400 block ml-0'>Ce champ est requis</span>}
                             </div>
-
-                            {/* <div className='justify-center items-center h-14 w-full my-4'>
-                                <label className='block text-sm font-normal text-gray-600'>Total</label>
-                                <input  type='number' {...register(`items.${index}.total`, {required:true})} className='h-8 w-full px-2 py-2 border mt-2'/>
-                                {errors.items?.[index]?.total && <span className='text-red-400 block ml-0'>Ce champ est requis</span>}
-                            </div> */}
                         </div>
                     ))}
                     
@@ -166,26 +163,31 @@ const CreateInvoice = () => {
                         <input type='text' {...register('billingAddress.street', { required: true })} className='h-8 w-full px-2  py-2 border mt-2'/>
                         {errors.billingAddress?.street && <span className='text-red-400 block ml-0'>Ce champ est requis</span>}
                     </div>
+
                     <div className='justify-center items-center h-14 w-full my-4'>
                         <label className='block text-sm font-normal text-gray-600'>City</label>
                         <input type='text' {...register('billingAddress.city', { required: true })} className='h-8 w-full px-2 py-2 border mt-2'/>
                         {errors.billingAddress?.city && <span className='text-red-400 block ml-0'>Ce champ est requis</span>}
                     </div>
+
                     <div className='justify-center items-center h-14 w-full my-4'>
                         <label className='block text-sm font-normal text-gray-600'>State</label>
                         <input type='text' {...register('billingAddress.state', { required: true })} className='h-8 w-full px-2 py-2 border mt-2'/>
                         {errors.billingAddress?.state && <span className='text-red-400 block ml-0'>Ce champ est requis</span>}
                     </div>
+
                     <div className='justify-center items-center h-14 w-full my-4'>
                         <label className='block text-sm font-normal text-gray-600'>zipCode</label>
                         <input type='text' {...register('billingAddress.zipCode', { required: true })} className='h-8 w-full px-2 py-2 border mt-2'/>
                         {errors.billingAddress?.zipCode && <span className='text-red-400 block ml-0'>Ce champ est requis</span>}
                     </div>
+
                     <div className='justify-center items-center h-14 w-full my-4'>
                         <label className='block text-sm font-normal text-gray-600'>Country</label>
                         <input type='text' {...register('billingAddress.country', { required: true })} className='h-8 w-full px-2 py-2 border mt-2'/>
                         {errors.billingAddress?.country && <span className='text-red-400 block ml-0'>Ce champ est requis</span>}
                     </div>
+
                 </div>
             </div>
             <div className='justify-center items-center h-14 w-full my-4 space-x-4 pt-4'>

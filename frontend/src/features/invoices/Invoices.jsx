@@ -4,39 +4,44 @@ import React from 'react';
 
 const  Invoices = ({invoice}) => {
 
+  // Obtenir la date et l'heure actuelles
+  const currentDate = new Date(Date.now());
+
+  // Formater la date en utilisant toLocaleDateString
+  const formattedDate = currentDate.toLocaleDateString();
 
   return (
     <div >
       
       <div className='flex justify-between items-center'>
         <h2 className="text-2xl font-bold mb-4">Invoice #{invoice.invoiceNumber}</h2>
-      
+        <p className="text-lg mb-4"> Invoice Date:{formattedDate}</p>
       </div>
 
       <div className="flex justify-between mb-8">
-        <div className='flex'>
-          <h3 className="text-lg font-bold mb-2">Customer</h3>
-            <div>
-              <span>Name:</span>
+        <div className=''>
+          <h3 className="text-lg font-bold mb-2 ">Customer</h3>
+            <div className='flex space-x-3'>
+              <span  className='font-bold '>Name:</span>
               <p>{invoice.customer.name}</p>
-              <span>Email:</span>
+              <span className='font-bold'>Email:</span>
               <p>{invoice.customer.email}</p>
-              <span>Phone:</span>
+              <span className='font-bold'>Phone:</span>
               <p>{invoice.customer.phone}</p>
             </div>
 
-            <div className='inline'>
-              <span className='inline'>Street:</span>
+            <div className='flex space-x-3'>
+              <span className='font-bold'>Street:</span>
               <p>{invoice.customer.address.street}</p>
-              <span>City:</span>
+              <span className='font-bold'>City:</span>
               <p>{invoice.customer.address.city}</p>
-              <span>State:</span>
+              <span className='font-bold'>State:</span>
               <p>{invoice.customer.address.state}</p>
             </div>
-            <div>
-            <span>zipCode:</span>
+            <div className='flex space-x-3 '>
+              <span className='font-bold'>zipCode:</span>
               <p>{invoice.customer.address.zipCode}</p>
-              <span>Country:</span>
+              <span className='font-bold'>Country:</span>
               <p>{invoice.customer.address.country}</p>
             </div>
         </div>

@@ -25,7 +25,7 @@ const CustomerList = () => {
   
 
   return (
-    <div className='container mx-auto my-8 mt-24'>
+    <div className='container mx-auto my-8 mt-24 md:mx-auto'>
       <div className='h-12 flex justify-between mb-4'>
         <button onClick={() => navigate("/createCustomer")} className='rounded bg-slate-600 text-white px-6 py-2'>Create Customer</button>
         <Link to='/searchCustomer'>
@@ -33,7 +33,7 @@ const CustomerList = () => {
         </Link>
       </div>
 
-      <div className='flex border-b shadow'>
+      <div className='flex border-b  shadow overflow-x-auto'>
         <table className='min-w-full'>
             <thead className='bg-gray-50'>
                 <tr>

@@ -1,17 +1,37 @@
-import React, { createRef } from 'react';
-import { useDeleteInvoiceMutation, useGetAllInvoiceQuery } from './invoiceApiSlice'
+import React, { createRef, useEffect, useState } from 'react';
+import { useDeleteInvoiceMutation } from './invoiceApiSlice'
 import Invoices from './Invoices';
 import ReactToPrint from 'react-to-print';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,  } from 'react-router-dom';
+import { useGetInvoicePaginatedQuery } from './invoiceApiSlice';
+import {MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
 
 
 const InvoiceList = () => {
 
-  const {data:invoices, isLoading} = useGetAllInvoiceQuery();
+  // const {data:invoices, isLoading} = useGetAllInvoiceQuery();
   const [deleteInvoice] = useDeleteInvoiceMutation();
   const navigate = useNavigate();
+  
   let componentRefs;
+  const [page, setPage] = useState(0);
+  const pageSize = 3;
 
+  // Récupérer les données paginées de l'API
+  const { data:invoices, isLoading} = useGetInvoicePaginatedQuery({ page, size: pageSize });
+
+  // Mettre à jour la page lorsque les données changent
+  useEffect(() => {
+    if (invoices && invoices.number !== page) {
+      setPage(invoices.number);
+    }
+  }, [invoices, page]);
+
+  // Gérer le changement de page
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    navigate(`/invoice/paginated?page=${newPage}&size=${pageSize}`)
+  }
 
   const handlerDelete = async (id) =>{
     try {
@@ -30,8 +50,8 @@ const InvoiceList = () => {
     }
 }
 
-  if(invoices && invoices.length > 0){
-    componentRefs = Array.from({ length: invoices.length }, () => createRef());
+  if(invoices && invoices.content.length > 0){
+    componentRefs = Array.from({ length: invoices.content.length }, () => createRef());
   } else{
     console.log('Invoices is not contain something')
   }
@@ -44,7 +64,7 @@ const InvoiceList = () => {
       </div>
       {!isLoading &&(
         <>
-          {invoices.map((invoice, index) =>(
+          {invoices.content.map((invoice, index) =>(
             <div  key={invoice.id} className=" bg-white shadow rounded mt-3 p-8  mb-16">
                 <div className='align-middle'>
                   <ReactToPrint 
@@ -64,9 +84,37 @@ const InvoiceList = () => {
                   <Invoices    key={invoice.id} invoice={invoice}/>
                 </div>
             </div>
-          ))}  
+          ))} 
+
+          {/* Afficher la pagination */}
+          <div className="flex justify-center mt-8 mb-6">
+            <button
+              className="px-4 py-2 mx-1 rounded bg-green-500 text-white"
+              onClick={() => handlePageChange(page - 1)}
+              disabled={page === 0}
+            >
+              <MdNavigateBefore />
+            </button>
+            {[...Array(invoices.totalPages)].map((_, index) => (
+              <button
+                key={index}
+                className={`px-4 py-2 mx-1 ${index === page ? 'bg-gray-200' : ''}`}
+                onClick={() => handlePageChange(index)}
+              >
+                {index + 1}
+              </button>
+            ))}
+            <button
+              className="rounded bg-green-500 text-white px-4 py-2 mx-1"
+              onClick={() => handlePageChange(page + 1)}
+              disabled={page === invoices.totalPages - 1}
+            >
+              <MdNavigateNext />
+            </button>
+          </div> 
         </>
       )}
+      
     </div>
   )
 }
